@@ -1,1 +1,28 @@
-hallo das ist ein testvdvdfvtttt
+Plan zum Aufbau der Anwendung:
+
+Frontend: (JS)
+- SparQL Anfragen, Ergebnisse anzeigen
+- CSV Download
+
+Fuseki:
+- Container auf dem Server starten mit Port Mapping
+- ttl hochladen wie lokal, mit shell/py script regelmäßig aktualisieren
+(- access control)
+- SPARQL-Endpunkt: http://<server>:3030/<dataset>/sparql
+
+Backend: (python)
+-   Automatisierung:
+    - script erstellen, dass bei neuen Daten in RDB automatisch neue .ttl 
+    generiert über ssh und mysql verbindung zum brnpdb Server und diese in den 
+    Fuseki Container auf dem Server lädt
+-   Dateien generieren:
+    .ttl für Fuseki
+    .sdf (r-cdk)        Einzeln in Detailansicht und für mehrere
+    .sdf (cemminR)
+    .mol2               Einzeln in Detailansicht und für mehrere
+    2D-Strukturbilder PNG/SVG
+
+
+
+
+
