@@ -14,3 +14,28 @@ export function rangeValue(
     return [oldValue[0], Math.min(max, right)];
   }
 }
+
+export function createRangeHandler(
+  value: number[],
+  setValue: (v: number[]) => void,
+  options: {
+    minDistance: number;
+    min: number;
+    max: number;
+  }
+) {
+  return (_: Event, newValue: number | number[], activeThumb: number) => {
+    if (!Array.isArray(newValue)) return;
+
+    const updated = rangeValue(
+      value,
+      newValue,
+      activeThumb,
+      options.minDistance,
+      options.min,
+      options.max
+    );
+
+    setValue(updated);
+  };
+}
