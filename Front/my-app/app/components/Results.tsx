@@ -1,37 +1,13 @@
 
 "use client"
 import * as React from "react"
-import {
-    ColumnDef,
-    ColumnFiltersState,
-    flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    SortingState,
-    useReactTable,
-    VisibilityState,
-} from "@tanstack/react-table"
+import {ColumnDef,ColumnFiltersState,flexRender,getCoreRowModel,getFilteredRowModel,getPaginationRowModel,getSortedRowModel,SortingState,useReactTable,VisibilityState,} from "@tanstack/react-table"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+import {DropdownMenu,DropdownMenuContent,DropdownMenuItem,DropdownMenuLabel,DropdownMenuSeparator,DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
+import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow,} from "@/components/ui/table"
+
 const data: Payment[] = [
     {
         id: "m5gr84i9",
@@ -94,6 +70,7 @@ export const columns: ColumnDef<Payment>[] = [
         },
         cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
     },
+
     {
         accessorKey: "amount",
         header: () => <div>Smiles</div>,
@@ -104,9 +81,10 @@ export const columns: ColumnDef<Payment>[] = [
                 style: "currency",
                 currency: "USD",
             }).format(amount)
-            return <div className="text-right font-medium">{formatted}</div>
+            return <div className="font-medium">{formatted}</div>
         },
     },
+    
     {
         id: "actions",
         enableHiding: false,
@@ -173,9 +151,7 @@ export function ResultBox() {
                     placeholder="Filter results..."
                     value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("email")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm"
+                        table.getColumn("email")?.setFilterValue(event.target.value)} className="max-w-sm"
                 />
             </div>
             <div className="overflow-hidden rounded-md">
@@ -188,9 +164,7 @@ export function ResultBox() {
                                         <TableHead key={header.id}>
                                             {header.isPlaceholder
                                                 ? null
-                                                : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
+                                                : flexRender( header.column.columnDef.header, header.getContext()
                                                 )}
                                         </TableHead>
                                     )
@@ -203,24 +177,17 @@ export function ResultBox() {
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
-                                >
+                                    data-state={row.getIsSelected() && "selected"}>
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
+                                            {flexRender( cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}
                                 </TableRow>
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center"
-                                >
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
                                     No results.
                                 </TableCell>
                             </TableRow>
@@ -234,19 +201,11 @@ export function ResultBox() {
                 </div>
                 <div className="space-x-2">
                     <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.previousPage()}
-                        disabled={!table.getCanPreviousPage()}
-                    >
+                        variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
                         Previous
                     </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => table.nextPage()}
-                        disabled={!table.getCanNextPage()}
-                    >
+                    <Button variant="outline"
+                        size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
                         Next
                     </Button>
                 </div>
