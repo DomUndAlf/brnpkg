@@ -37,6 +37,7 @@ function CLogP() {
               valueLabelDisplay="auto"
               min={MIN}
               max={MAX}
+               color="success"
               />
     </Box>
   );

@@ -1,10 +1,11 @@
 import BioProp from "./components/BioProp";
-
 import GenInfo from "./components/GenInfo";
 import Sample from "./components/Sample";
 import Source from "./components/Source";
 import ChemInfo from "./components/ChemInfo";
 import { Button } from "@/components/ui/button";
+import Downloads from "./components/Downloads";
+import { ResultBox } from "./components/Results";
 
 export default function Home() {
   return (
@@ -26,6 +27,9 @@ export default function Home() {
           <Button className="bg-green-700 p-5 text-white">Search</Button>
           <Button className="bg-green-700 p-5 text-white">Reset</Button>
         </div>
+
+        <Downloads />
+        <ResultBox />
     </div>
   );
 }
