@@ -6,6 +6,7 @@ import ChemInfo from "./components/ChemInfo";
 import { Button } from "@/components/ui/button";
 import Downloads from "./components/Downloads";
 import { ResultBox } from "./components/Results";
+import Wrapper from "./components/Detailpage/Wrapper";
 
 export default function Home() {
   return (
@@ -30,6 +31,13 @@ export default function Home() {
 
         <Downloads />
         <ResultBox />
+
+
+    <>
+    {/* später löschen, ist nur zum testen wie es aussieht */}
+    <Wrapper />
+    
+    </>
     </div>
   );
 }
