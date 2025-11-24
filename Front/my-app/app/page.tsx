@@ -1,3 +1,5 @@
+"use client";
+
 import BioProp from "./components/BioProp";
 import GenInfo from "./components/GenInfo";
 import Sample from "./components/Sample";
@@ -31,9 +33,7 @@ export default function Home() {
 
         <Downloads />
         <ResultBox />
-
-
-    <>
+  <>
     {/* später löschen, ist nur zum testen wie es aussieht */}
     <Wrapper />
     
