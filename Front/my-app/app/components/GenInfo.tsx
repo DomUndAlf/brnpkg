@@ -18,10 +18,10 @@ import {
 
 export function GenInfo() {
   return (
-    <div className="grid w-full max-w-sm gap-6 m-10 p-5 border rounded-md">
+    <div className="grid w-130 gap-6 m-10 p-5 border rounded-md">
     <div className="flex items-center gap-2">
         <CircleQuestionMark />
-        <h3>General Information</h3>
+        <h3 className="text-lg">General Information</h3>
     </div>
       <InputGroup>
         <InputGroupInput placeholder="Common Name" />

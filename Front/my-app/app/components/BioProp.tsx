@@ -4,10 +4,10 @@ import { ChevronDown, Microscope } from "lucide-react";
 
 function BioProp() {
   return (
-    <div className="grid w-full max-w-sm gap-6 m-10 p-5 border rounded-md">
+    <div className="grid w-130 gap-6 m-10 p-5 border rounded-md">
     <div className="flex items-center gap-2">
         <Microscope />
-        <h3>Biological Properties</h3>
+        <h3 className="text-lg">Biological Properties</h3>
     </div>
     <DropdownMenu>
         <DropdownMenuTrigger className="w-full">

@@ -13,8 +13,9 @@ function ChemInfo() {
     <div className="grid gap-6 m-10 p-5 border rounded-md">
         <div className="flex items-center gap-2">
             <FlaskConical />
-            <h3>Chemical Information</h3>
+            <h3 className="text-lg">Chemical Information</h3>
         </div>
+    <div className="place-items-center">
         <MolMass />
         <HBondA />
         <HBondD />
@@ -23,6 +24,7 @@ function ChemInfo() {
         <CLogP />
         <TPSA />
         <RotableBonds />
+        </div>
     </div>
     );
 }

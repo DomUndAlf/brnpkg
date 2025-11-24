@@ -15,13 +15,13 @@ export default function Home() {
     <div>
       <header className="bg-green-700 text-white h-15 font-bold text-xl text-center p-4"> BRnpKG </header>
         <div className="flex flex-row justify-center">
-          <div>
+          <div  className="flex-1 max-w-xl">
             <GenInfo />
             <Sample />
             <Source />
             <BioProp />
           </div>
-          <div>
+          <div  className="flex-1 max-w-xl">
             <ChemInfo />
           </div>
         </div>
