@@ -14,9 +14,8 @@ interface Props {
 export default function MoleculeStructure({
   id,
   structure,
-  width = 300,
-  height = 200,
-  svgMode = true,
+  width = 500,
+  height = 500,
 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
@@ -36,8 +35,22 @@ export default function MoleculeStructure({
           return;
         }
 
-        const svg = mol.get_svg();
+        let svg = mol.get_svg();
         mol.delete();
+
+        // --- SVG skalieren ---
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(svg, "image/svg+xml");
+        const svgEl = doc.documentElement;
+
+        svgEl.setAttribute("width", `${width}px`);
+        svgEl.setAttribute("height", `${height}px`);
+
+        if (!svgEl.hasAttribute("viewBox")) {
+          svgEl.setAttribute("viewBox", `0 0 ${width} ${height}`);
+        }
+
+        svg = new XMLSerializer().serializeToString(svgEl);
 
         if (ref.current) {
           ref.current.innerHTML = svg;
@@ -49,7 +62,7 @@ export default function MoleculeStructure({
     }
 
     draw();
-  }, [structure]);
+  }, [structure, width, height]);
 
   if (error) return <div style={{ color: "red" }}>{error}</div>;
 
