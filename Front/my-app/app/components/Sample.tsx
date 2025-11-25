@@ -3,6 +3,7 @@ import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/in
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { speciesList, locationList } from "../utils/queries.json"
 import { useEffect, useState } from "react";
+import { fetchSample } from "../utils/fetch"; 
 
 export function Sample() {
   const [species, setSpecies] = useState<Array<{ label: { value: string } }>>([]);
@@ -10,20 +11,7 @@ export function Sample() {
   const [location, setLocation] = useState<Array<{ label: { value: string } }>>([]);
   const [speciesOpen, setSpeciesOpen] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState("");
-
-  async function fetchSample(query: string) {
-    const res = await fetch("http://localhost:4000/sparql", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ query })
-    });
-
-    const data = await res.json();
-    return data.results.bindings;
-  }
-
+  
   useEffect(() => {
     fetchSample(speciesList).then(setSpecies);
   }, []);
