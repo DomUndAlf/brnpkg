@@ -1,24 +1,10 @@
-import {
-  ChevronDown,
-  CircleQuestionMark,
-  SearchIcon,
-} from "lucide-react"
-
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "@/components/ui/input-group"
-
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-} from "@/components/ui/dropdown-menu";
+import { ChevronDown, CircleQuestionMark, SearchIcon } from "lucide-react"
+import { InputGroup, InputGroupAddon, InputGroupInput} from "@/components/ui/input-group"
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from "@/components/ui/dropdown-menu";
 
 export function GenInfo() {
   return (
-    <div className="grid w-130 gap-6 m-10 p-5 border rounded-md">
+    <div className="grid w-130 gap-4 m-10 p-5 border rounded-md">
     <div className="flex items-center gap-2">
         <CircleQuestionMark />
         <h3 className="text-lg">General Information</h3>

@@ -6,7 +6,7 @@ import Slider from "@mui/material/Slider";
 import { createRangeHandler } from "../utils/slider";
 
 function RotableBonds() {
-  const [RotableBonds, setrotableBonds] = React.useState([0, 20]);
+  const [RotableBonds, setrotableBonds] = React.useState([0, 30]);
 
   const handlerotableBonds = createRangeHandler(RotableBonds, setrotableBonds, {
   minDistance: 1,

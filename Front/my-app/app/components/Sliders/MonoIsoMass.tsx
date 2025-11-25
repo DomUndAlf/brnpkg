@@ -6,7 +6,7 @@ import Slider from "@mui/material/Slider";
 import { createRangeHandler } from "../utils/slider";
 
 function MonoIsoMass() {
-  const [monoIsoMass, setMonoIsoMass] = React.useState([10, 990]);
+  const [monoIsoMass, setMonoIsoMass] = React.useState([0, 1000]);
 
   const handleMonoIsoMass = createRangeHandler(monoIsoMass, setMonoIsoMass, {
   minDistance: 1,

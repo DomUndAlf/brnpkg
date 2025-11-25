@@ -6,7 +6,7 @@ import Slider from "@mui/material/Slider";
 import { createRangeHandler } from "../utils/slider";
 
 function Lipinski() {
-  const [lipinski, setLipinski] = React.useState([1, 4]);
+  const [lipinski, setLipinski] = React.useState([0, 5]);
 
   const handleLipinski = createRangeHandler(lipinski, setLipinski, {
   minDistance: 1,

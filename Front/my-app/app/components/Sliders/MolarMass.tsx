@@ -6,7 +6,7 @@ import Slider from "@mui/material/Slider";
 import { createRangeHandler } from "../utils/slider";
 
 function MolMass() {
-  const [molMass, setMolMass] = React.useState([1, 1100]);
+  const [molMass, setMolMass] = React.useState([1, 1200]);
 
   const handleMolMass = createRangeHandler(molMass, setMolMass, {
   minDistance: 1,

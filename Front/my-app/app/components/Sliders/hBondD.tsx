@@ -6,7 +6,7 @@ import Slider from "@mui/material/Slider";
 import { createRangeHandler } from "../utils/slider";
 
 function HBondD() {
-  const [hBondD, setHBondD] = React.useState([0, 12]);
+  const [hBondD, setHBondD] = React.useState([0, 30]);
 
   const handleHBondD = createRangeHandler(hBondD, setHBondD, {
   minDistance: 1,

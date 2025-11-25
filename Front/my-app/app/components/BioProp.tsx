@@ -5,7 +5,7 @@ import { fetchSample } from "../utils/fetch";
 import { useEffect, useState } from "react";
 import propertyList from "../utils/queries.json"
 
-function BioProp() {
+function BioProp({ onChange }: { onChange: (v: string) => void }) {
   const [properties, setProperties] = useState<Array<{ label: { value: string } }>>([]);
   const [selectedProp, setSelectedProp] = useState("");
 
@@ -15,7 +15,7 @@ function BioProp() {
   
 
   return (
-    <div className="grid w-130 gap-6 m-10 p-5 border rounded-md">
+    <div className="grid w-130 gap-5 m-10 p-5 border rounded-md">
       <div className="flex items-center gap-2">
         <Microscope />
         <h3 className="text-lg">Biological Properties</h3>
@@ -32,7 +32,9 @@ function BioProp() {
         <DropdownMenuContent>
           {properties.map((item) => (
             <DropdownMenuItem key={item.label.value}
-              onClick={() => setSelectedProp(item.label.value)}>
+              onClick={() => {
+              setSelectedProp(item.label.value); 
+              onChange(item.label.value);}}>
               {item.label.value}
             </DropdownMenuItem>
           ))}

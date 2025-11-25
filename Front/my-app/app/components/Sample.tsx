@@ -5,13 +5,19 @@ import { speciesList, locationList } from "../utils/queries.json"
 import { useEffect, useState } from "react";
 import { fetchSample } from "../utils/fetch"; 
 
-export function Sample() {
+interface SampleProps {
+  onSpeciesChange: (species: string) => void;
+  onLocationChange: (location: string) => void;
+}
+
+export function Sample({ onSpeciesChange, onLocationChange }: SampleProps) {
   const [species, setSpecies] = useState<Array<{ label: { value: string } }>>([]);
-  const [search, setSearch] = useState("");
   const [location, setLocation] = useState<Array<{ label: { value: string } }>>([]);
   const [speciesOpen, setSpeciesOpen] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState("");
   
+  const [search, setSearch] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState("");
+
   useEffect(() => {
     fetchSample(speciesList).then(setSpecies);
   }, []);
@@ -24,8 +30,19 @@ export function Sample() {
     s.label.value.toLowerCase().includes(search.toLowerCase())
   );
 
+    const handleLocationSelect = (value: string) => {
+    setSelectedLocation(value);
+    onLocationChange(value);
+  };
+
+    const handleSpeciesSelect = (value: string) => {
+    setSearch(value);
+    onSpeciesChange(value);
+    setSpeciesOpen(false);
+  };
+
   return (
-    <div className="grid w-130 gap-6 m-10 p-5 border rounded-md">
+    <div className="grid w-130 gap-4 m-10 p-5 border rounded-md">
       <div className="flex items-center gap-2">
         <Leaf />
         <h3 className="text-lg">Sample</h3>
@@ -51,10 +68,7 @@ export function Sample() {
             <div
               key={s.label.value}
               className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
-              onClick={() => {
-                setSearch(s.label.value)
-                setSpeciesOpen(false)   // <-- schließt die Liste
-              }}>
+              onClick={() => handleSpeciesSelect(s.label.value)}>
               {s.label.value}
             </div>
           ))}
@@ -73,7 +87,7 @@ export function Sample() {
         <DropdownMenuContent>
           {location.map((item) => (
             <DropdownMenuItem key={item.label.value}
-            onClick={() => setSelectedLocation(item.label.value)}>
+            onClick={() => handleLocationSelect(item.label.value)}>
               {item.label.value}
             </DropdownMenuItem>
           ))}

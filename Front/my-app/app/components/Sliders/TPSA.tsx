@@ -6,7 +6,7 @@ import Slider from "@mui/material/Slider";
 import { createRangeHandler } from "../utils/slider";
 
 function TPSA() {
-  const [TPSA, setTPSA] = React.useState([1, 400]);
+  const [TPSA, setTPSA] = React.useState([0, 500]);
 
   const handleTPSA = createRangeHandler(TPSA, setTPSA, {
   minDistance: 1,
@@ -28,7 +28,7 @@ function TPSA() {
 
   return (
     <Box sx={{ width: 350 }}>
-      <h3>Molar Mass (g/mol)</h3>
+      <h3>TPSA</h3>
       <Slider value={TPSA} 
               onChange={handleTPSA}
               disableSwap
