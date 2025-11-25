@@ -1,0 +1,4 @@
+{
+  "speciesList": "PREFIX onto: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?label WHERE {?species a onto:Species .  ?species rdfs:label ?label}",
+  "locationList": "PREFIX onto: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?label WHERE {?state a onto:State . OPTIONAL { ?state rdfs:label ?label }}"
+}
