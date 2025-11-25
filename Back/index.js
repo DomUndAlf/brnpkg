@@ -1,12 +1,14 @@
 import express from "express";
 import fetch from "node-fetch";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.post("/sparql", async (req, res) => {
   try {
-    const response = await fetch("http://localhost:3030/nubbe2KG/sparql", {
+    const response = await fetch("http://localhost:3030/nubbe2KG/query", {
       method: "POST",
       headers: {
         "Content-Type": "application/sparql-query",
