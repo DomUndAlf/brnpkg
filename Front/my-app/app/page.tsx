@@ -15,7 +15,9 @@ export default function Home() {
   const [, setSource] = useState("");
   const [, setSpecies] = useState("");
   const [, setLocation] = useState("");
-  // const [genInfo, setGenInto] = useState("");
+  const [, setCommonName] = useState("");
+  // const [, setMetabolicClass] = useState(""); 
+  const [, setFormula] = useState("");
   const [, setBioProp] = useState("");
 
   return (

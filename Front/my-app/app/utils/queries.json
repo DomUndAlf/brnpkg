@@ -1,5 +1,5 @@
 {
-    "speciesList": "PREFIX onto: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?label WHERE {?species a onto:Species .  ?species rdfs:label ?label}",
+   "speciesList": "PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT ?label WHERE { ?species a nubbekg:Species ; rdfs:label ?label . FILTER NOT EXISTS { ?species skos:notation ?name } }",
     "locationList": "PREFIX onto: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?label WHERE {?state a onto:State . OPTIONAL { ?state rdfs:label ?label }}",
     "propertyList": "PREFIX onto: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?label WHERE { ?bioactivity a onto:Bioactivity . OPTIONAL { ?bioactivity rdfs:label ?label }}"
 }
