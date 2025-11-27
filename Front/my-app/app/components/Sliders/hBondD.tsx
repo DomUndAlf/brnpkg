@@ -3,17 +3,16 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import { createRangeHandler } from "../utils/slider";
 
-function HBondD() {
+function HBondD({ onChange }: { onChange: (value: [number | null, number | null]) => void }) {
   const [hBondD, setHBondD] = React.useState([0, 30]);
 
-  const handleHBondD = createRangeHandler(hBondD, setHBondD, {
-  minDistance: 1,
-  min: 0,
-  max: 30
-});
-  
+  const handleHBondD = (event: Event, newValue: number | number[]) => {
+  if (Array.isArray(newValue)) {
+    setHBondD(newValue as [number, number]);
+    onChange(newValue as [number, number]);
+  }
+};
   const MAX = 30;
   const MIN =0;
 

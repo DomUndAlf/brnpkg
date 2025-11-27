@@ -3,16 +3,16 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import { createRangeHandler } from "../utils/slider";
 
-function MonoIsoMass() {
+function MonoIsoMass({ onChange }: { onChange: (value: [number | null, number | null]) => void }) {
   const [monoIsoMass, setMonoIsoMass] = React.useState([0, 1000]);
 
-  const handleMonoIsoMass = createRangeHandler(monoIsoMass, setMonoIsoMass, {
-  minDistance: 1,
-  min: 0,
-  max: 1000
-});
+  const handleMonoIsoMass = (event: Event, newValue: number | number[]) => {
+  if (Array.isArray(newValue)) {
+    setMonoIsoMass(newValue as [number, number]);
+    onChange(newValue as [number, number]);
+  }
+};
   
   const MAX = 1000;
   const MIN =0;

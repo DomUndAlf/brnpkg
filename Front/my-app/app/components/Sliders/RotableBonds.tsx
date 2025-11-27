@@ -3,16 +3,16 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import { createRangeHandler } from "../utils/slider";
 
-function RotableBonds() {
+function RotableBonds({ onChange }: { onChange: (value: [number | null, number | null]) => void }) {
   const [RotableBonds, setrotableBonds] = React.useState([0, 30]);
 
-  const handlerotableBonds = createRangeHandler(RotableBonds, setrotableBonds, {
-  minDistance: 1,
-  min: 0,
-  max: 30
-});
+  const handlerotableBonds = (event: Event, newValue: number | number[]) => {
+  if (Array.isArray(newValue)) {
+    setrotableBonds(newValue as [number, number]);
+    onChange(newValue as [number, number]);
+  }
+};
   
   const MAX = 30;
   const MIN = 0;

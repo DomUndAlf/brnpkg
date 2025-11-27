@@ -3,16 +3,16 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import { createRangeHandler } from "../utils/slider";
 
-function MolMass() {
+function MolMass({ onChange }: { onChange: (value: [number | null, number | null]) => void }) {
   const [molMass, setMolMass] = React.useState([1, 1200]);
 
-  const handleMolMass = createRangeHandler(molMass, setMolMass, {
-  minDistance: 1,
-  min: 0,
-  max: 1200
-});
+  const handleMolMass = (event: Event, newValue: number | number[]) => {
+  if (Array.isArray(newValue)) {
+    setMolMass(newValue as [number, number]);
+    onChange(newValue as [number, number]);
+  }
+};
   
   const MAX = 1200;
   const MIN =0;

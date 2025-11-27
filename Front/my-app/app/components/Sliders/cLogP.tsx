@@ -3,17 +3,17 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import { createRangeHandler } from "../utils/slider";
 
-function CLogP() {
-  const [CLogP, setCLogP] = React.useState([-8, 14]);
+function CLogP({ onChange }: { onChange: (value: [number | null, number | null]) => void }) {
+  const [CLogP, setCLogP] = React.useState<[number, number]>([-8, 14]);
 
-  const handleCLogP = createRangeHandler(CLogP, setCLogP, {
-  minDistance: 1,
-  min: -8,
-  max: 14
-});
-  
+const handleCLogP = (event: Event, newValue: number | number[]) => {
+  if (Array.isArray(newValue)) {
+    setCLogP(newValue as [number, number]);
+    onChange(newValue as [number, number]);
+  }
+};
+
   const MAX = 14;
   const MIN = -8;
 

@@ -3,16 +3,16 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import { createRangeHandler } from "../utils/slider";
 
-function TPSA() {
+function TPSA({ onChange }: { onChange: (value: [number | null, number | null]) => void }) {
   const [TPSA, setTPSA] = React.useState([0, 500]);
 
-  const handleTPSA = createRangeHandler(TPSA, setTPSA, {
-  minDistance: 1,
-  min: 0,
-  max: 500
-});
+  const handleTPSA = (event: Event, newValue: number | number[]) => {
+  if (Array.isArray(newValue)) {
+    setTPSA(newValue as [number, number]);
+    onChange(newValue as [number, number]);
+  }
+};
   
   const MAX = 500
   const MIN =0;

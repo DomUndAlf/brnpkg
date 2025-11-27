@@ -1,5 +1,86 @@
 {
    "speciesList": "PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> PREFIX skos: <http://www.w3.org/2004/02/skos/core#> SELECT ?label WHERE { ?species a nubbekg:Species ; rdfs:label ?label . FILTER NOT EXISTS { ?species skos:notation ?name } }",
     "locationList": "PREFIX onto: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?label WHERE {?state a onto:State . OPTIONAL { ?state rdfs:label ?label }}",
-    "propertyList": "PREFIX onto: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?label WHERE { ?bioactivity a onto:Bioactivity . OPTIONAL { ?bioactivity rdfs:label ?label }}"
+    "propertyList": "PREFIX onto: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?label WHERE { ?bioactivity a onto:Bioactivity . OPTIONAL { ?bioactivity rdfs:label ?label }}",
+    "nameList": "PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?commonName WHERE { ?compound a nubbekg:Compound ; nubbekg:commonName ?commonName . FILTER(BOUND(?commonName))}"
 }
+
+Spezies mit best. Namen finden:[
+    PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?compound ?commonName ?smiles WHERE {
+  ?species a nubbekg:Species ;
+           rdfs:label "Aaptos aaptos" .
+  ?analysis a nubbekg:Analysis ;
+            nubbekg:aboutSpecimen ?species ;
+            nubbekg:discovered ?compound .
+  ?compound nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles .
+}
+]
+
+Alle Compounds aus best. Staat:[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX data: <http://nubbekg.aksw.org/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?compound ?commonName ?smiles WHERE {
+  ?state a nubbekg:State ;
+         rdfs:label ?stateLabel .
+  FILTER (lcase(str(?stateLabel)) = lcase("ceará"))
+  ?analysis a nubbekg:Analysis ;
+            nubbekg:locatedIn ?state ;
+            nubbekg:discovered ?compound .
+  ?compound nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles .
+}]
+
+Alle Compounds mit best. commonName:[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX data: <http://nubbekg.aksw.org/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?compound ?commonName ?smiles WHERE {
+
+  # Compound finden
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles .
+
+  # Filter auf common name
+  FILTER (lcase(str(?commonName)) = lcase("NAME_HIER"))
+}]
+
+lle Compounds mit best. MolecularFormula[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?commonName ?smiles WHERE {
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles ;
+            nubbekg:hasDescriptors ?descBlock .
+
+  # alle Descriptor-Einträge des Blocks
+  ?descBlock nubbekg:hasDescriptor ?descriptor .
+
+  # molecularFormula erkennen:
+  ?descriptor a nubbekg:MolecularDescriptor ;
+              nubbekg:hasValue ?formula .
+
+  FILTER(lcase(str(?formula)) = "c10h16")
+}
+]
+
+Compounds mit best lipinski[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?compound ?commonName ?smiles WHERE {
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles ;
+            nubbekg:hasDescriptors ?descBlock .
+  ?descBlock nubbekg:hasDescriptor ?descriptor .
+  ?descriptor a nubbekg:ConstitutionalDescriptor ;
+              nubbekg:hasValue ?lipValue .
+  FILTER(xsd:integer(?lipValue) >= 0 && xsd:integer(?lipValue) <= 1)
+}
+]

@@ -99,3 +99,6 @@ export function Sample({ onSpeciesChange, onLocationChange }: SampleProps) {
 
 
 export default Sample
+
+
+//neuen tab öffnen statt fenster das fenster obendrüber

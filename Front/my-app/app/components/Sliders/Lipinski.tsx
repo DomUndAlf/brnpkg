@@ -3,16 +3,16 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import { createRangeHandler } from "../utils/slider";
 
-function Lipinski() {
+function Lipinski({ onChange }: { onChange: (value: [number | null, number | null]) => void }) {
   const [lipinski, setLipinski] = React.useState([0, 5]);
 
-  const handleLipinski = createRangeHandler(lipinski, setLipinski, {
-  minDistance: 1,
-  min: 0,
-  max: 5
-});
+  const handleLipinski = (event: Event, newValue: number | number[]) => {
+  if (Array.isArray(newValue)) {
+    setLipinski(newValue as [number, number]);
+    onChange(newValue as [number, number]);
+  }
+};
   
   const MAX = 5;
   const MIN =0;
