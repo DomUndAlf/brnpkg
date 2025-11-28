@@ -24,13 +24,17 @@ Alle Compounds aus best. Staat:[PREFIX nubbekg: <http://nubbekg.aksw.org/ontolog
 PREFIX data: <http://nubbekg.aksw.org/data/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?compound ?commonName ?smiles WHERE {
+SELECT DISTINCT ?compound ?commonName ?smiles WHERE {
   ?state a nubbekg:State ;
          rdfs:label ?stateLabel .
   FILTER (lcase(str(?stateLabel)) = lcase("ceará"))
+
   ?analysis a nubbekg:Analysis ;
-            nubbekg:locatedIn ?state ;
+            nubbekg:aboutSpecimen ?specimen ;
             nubbekg:discovered ?compound .
+  
+  ?specimen nubbekg:discoveredIn ?state .
+
   ?compound nubbekg:commonName ?commonName ;
             nubbekg:smiles ?smiles .
 }]
@@ -84,3 +88,33 @@ SELECT DISTINCT ?compound ?commonName ?smiles WHERE {
   FILTER(xsd:integer(?lipValue) >= 0 && xsd:integer(?lipValue) <= 1)
 }
 ]
+
+Compounds mit best. bioactivity[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?compound ?commonName ?smiles WHERE {
+  ?bio a nubbekg:Bioactivity ;
+       rdfs:label "Anxiolytic" .
+  ?analysis a nubbekg:Analysis ;
+            nubbekg:hasBioAssay ?bio ;
+            nubbekg:discovered ?compound .
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles .
+}]
+
+Compounds mit best. sampletype[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX data: <http://nubbekg.aksw.org/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?compound ?commonName ?smiles WHERE {
+  ?analysis a nubbekg:Analysis ;
+            nubbekg:aboutSpecimen ?specimen ;
+            nubbekg:discovered ?compound .
+
+  ?specimen nubbekg:sampleType ?sampleType .
+  FILTER (lcase(str(?sampleType)) = lcase("Biotransformation"))
+
+  ?compound nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles .
+}]

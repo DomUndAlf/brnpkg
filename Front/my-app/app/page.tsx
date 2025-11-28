@@ -35,7 +35,7 @@ export default function Home() {
           <div  className="flex-1 max-w-xl">
             <GenInfo onNameChange={setCommonName} onFormulaChange={setFormula} /> 
             <Sample onSpeciesChange={setSpecies} onLocationChange={setLocation} />
-            <Source onChange={setSource}/>
+            {/* <Source onChange={setSource}/> */}
             <BioProp onChange={setBioProp}/>
           </div>
           <div  className="flex-1 max-w-xl">
