@@ -1,24 +1,10 @@
+###STATE:
 
-Spezies mit best. Namen finden:[
-    PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-
-SELECT ?compound ?commonName ?smiles WHERE {
-  ?species a nubbekg:Species ;
-           rdfs:label "Aaptos aaptos" .
-  ?analysis a nubbekg:Analysis ;
-            nubbekg:aboutSpecimen ?species ;
-            nubbekg:discovered ?compound .
-  ?compound nubbekg:commonName ?commonName ;
-            nubbekg:smiles ?smiles .
-}
-]
-
-Alle Compounds aus best. Staat:[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
 PREFIX data: <http://nubbekg.aksw.org/data/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT DISTINCT ?compound ?commonName ?smiles WHERE {
+SELECT DISTINCT ?commonName ?smiles WHERE {
   ?state a nubbekg:State ;
          rdfs:label ?stateLabel .
   FILTER (lcase(str(?stateLabel)) = lcase("ceará"))
@@ -31,24 +17,32 @@ SELECT DISTINCT ?compound ?commonName ?smiles WHERE {
 
   ?compound nubbekg:commonName ?commonName ;
             nubbekg:smiles ?smiles .
-}]
+}
 
-Alle Compounds mit best. commonName:[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+
+
+####COMMONNAME:
+
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
 PREFIX data: <http://nubbekg.aksw.org/data/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?compound ?commonName ?smiles WHERE {
+SELECT ?commonName ?smiles WHERE {
 
-  # Compound finden
   ?compound a nubbekg:Compound ;
             nubbekg:commonName ?commonName ;
             nubbekg:smiles ?smiles .
 
-  # Filter auf common name
-  FILTER (lcase(str(?commonName)) = lcase("NAME_HIER"))
-}]
+  FILTER (lcase(str(?commonName)) = lcase("Salacin"))
+}
 
-lle Compounds mit best. MolecularFormula[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+
+####FORMULA:
+
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX data: <http://nubbekg.aksw.org/data/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?commonName ?smiles WHERE {
@@ -66,24 +60,32 @@ SELECT ?commonName ?smiles WHERE {
 
   FILTER(lcase(str(?formula)) = "c10h16")
 }
-]
 
-Compounds mit best lipinski[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+
+####LIPINSKI:
+
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 
-SELECT DISTINCT ?compound ?commonName ?smiles WHERE {
+SELECT DISTINCT ?commonName ?smiles ?value WHERE {
   ?compound a nubbekg:Compound ;
             nubbekg:commonName ?commonName ;
             nubbekg:smiles ?smiles ;
             nubbekg:hasDescriptors ?descBlock .
-  ?descBlock nubbekg:hasDescriptor ?descriptor .
-  ?descriptor a nubbekg:ConstitutionalDescriptor ;
-              nubbekg:hasValue ?lipValue .
-  FILTER(xsd:integer(?lipValue) >= 0 && xsd:integer(?lipValue) <= 1)
-}
-]
 
-Compounds mit best. bioactivity[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+  ?descBlock nubbekg:hasDescriptor ?descriptor .
+  FILTER(CONTAINS(STR(?descriptor), "lipinski"))
+
+  ?descriptor nubbekg:hasValue ?value .
+
+  FILTER(xsd:decimal(?value) >= 0 && xsd:decimal(?value) <= 3)
+}
+
+
+
+####BIOACTIVITY:
+
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
 PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT ?compound ?commonName ?smiles WHERE {
@@ -95,13 +97,16 @@ SELECT ?compound ?commonName ?smiles WHERE {
   ?compound a nubbekg:Compound ;
             nubbekg:commonName ?commonName ;
             nubbekg:smiles ?smiles .
-}]
+}
 
-Compounds mit best. sampletype[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+
+####SAMPLETYPE
+
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
 PREFIX data: <http://nubbekg.aksw.org/data/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT DISTINCT ?compound ?commonName ?smiles WHERE {
+SELECT DISTINCT ?commonName ?smiles WHERE {
   ?analysis a nubbekg:Analysis ;
             nubbekg:aboutSpecimen ?specimen ;
             nubbekg:discovered ?compound .
@@ -111,9 +116,12 @@ SELECT DISTINCT ?compound ?commonName ?smiles WHERE {
 
   ?compound nubbekg:commonName ?commonName ;
             nubbekg:smiles ?smiles .
-}]
+}
 
-Alle compound mit bestimmter metabolic class (Pathway): [
+
+
+####METABOLIC CLASS 
+
   PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
@@ -127,4 +135,269 @@ SELECT ?commonName ?smiles WHERE {
   ?pathway rdfs:label "Alkaloids" .
 }
 
-]
+
+
+#######LOGP
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?commonName ?smiles ?logP WHERE {
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles ;
+            nubbekg:hasDescriptors ?descBlock .
+
+  ?descBlock nubbekg:hasDescriptor ?descriptor .
+  FILTER(CONTAINS(STR(?descriptor), "logpCoefficient"))
+
+  ?descriptor nubbekg:hasValue ?logP .
+
+  FILTER(xsd:decimal(?logP) >= 0 && xsd:decimal(?logP) <= 3)
+}
+
+
+#### Molar Mass (Molecular Volume?)
+
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?commonName ?smiles ?value WHERE {
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles ;
+            nubbekg:hasDescriptors ?descBlock .
+
+  ?descBlock nubbekg:hasDescriptor ?descriptor .
+  FILTER(CONTAINS(STR(?descriptor), "molecularVolume"))
+
+  ?descriptor nubbekg:hasValue ?value .
+
+  FILTER(xsd:decimal(?value) >= 0 && xsd:decimal(?value) <= 1000)
+}
+
+
+#### HBond Acc
+
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?commonName ?smiles ?value WHERE {
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles ;
+            nubbekg:hasDescriptors ?descBlock .
+
+  ?descBlock nubbekg:hasDescriptor ?descriptor .
+  FILTER(CONTAINS(STR(?descriptor), "hBondAcceptorCount"))
+
+  ?descriptor nubbekg:hasValue ?value .
+
+  FILTER(xsd:decimal(?value) >= 0 && xsd:decimal(?value) <= 1)
+}
+
+#### HBond Don 
+
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?commonName ?smiles ?value WHERE {
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles ;
+            nubbekg:hasDescriptors ?descBlock .
+
+  ?descBlock nubbekg:hasDescriptor ?descriptor .
+  FILTER(CONTAINS(STR(?descriptor), "hBondDonorCount"))
+
+  ?descriptor nubbekg:hasValue ?value .
+
+  FILTER(xsd:decimal(?value) >= 0 && xsd:decimal(?value) <= 3)
+}
+
+#### Monoisotopic 
+
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?commonName ?smiles ?value WHERE {
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles ;
+            nubbekg:hasDescriptors ?descBlock .
+
+  ?descBlock nubbekg:hasDescriptor ?descriptor .
+  FILTER(CONTAINS(STR(?descriptor), "monoisotopicMass"))
+
+  ?descriptor nubbekg:hasValue ?value .
+
+  FILTER(xsd:decimal(?value) >= 0 && xsd:decimal(?value) <= 100)
+}
+
+#### TPSA 
+
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?commonName ?smiles ?value WHERE {
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles ;
+            nubbekg:hasDescriptors ?descBlock .
+
+  ?descBlock nubbekg:hasDescriptor ?descriptor .
+  FILTER(CONTAINS(STR(?descriptor), "tpsa"))
+
+  ?descriptor nubbekg:hasValue ?value .
+
+  FILTER(xsd:decimal(?value) >= 0 && xsd:decimal(?value) <= 100)
+}
+
+
+#### Rotable Bonds 
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?commonName ?smiles ?value WHERE {
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles ;
+            nubbekg:hasDescriptors ?descBlock .
+
+  ?descBlock nubbekg:hasDescriptor ?descriptor .
+  FILTER(CONTAINS(STR(?descriptor), "nrotb"))
+
+  ?descriptor nubbekg:hasValue ?value .
+
+  FILTER(xsd:decimal(?value) >= 0 && xsd:decimal(?value) <= 100)
+}
+
+
+
+
+
+
+MASTER
+
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX data: <http://nubbekg.aksw.org/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?commonName ?smiles WHERE {
+
+  ############################
+  # Basis: alle Verbindungen #
+  ############################
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles .
+
+  ########################################
+  # OPTIONAL: COMMON NAME FILTER
+  ########################################
+  OPTIONAL { BIND(?commonName AS ?cnFilter) }
+  FILTER( !BOUND(?commonNameFilter) || lcase(str(?commonName)) = lcase(str(?commonNameFilter)) )
+
+
+  ########################################
+  # OPTIONAL: STATE FILTER
+  ########################################
+  OPTIONAL {
+    ?analysis a nubbekg:Analysis ;
+              nubbekg:aboutSpecimen ?specimen ;
+              nubbekg:discovered ?compound .
+    ?specimen nubbekg:discoveredIn ?state .
+    ?state rdfs:label ?stateLabel .
+  }
+  FILTER( !BOUND(?stateFilter) || lcase(str(?stateLabel)) = lcase(str(?stateFilter)) )
+
+
+  ########################################
+  # OPTIONAL: SAMPLE TYPE
+  ########################################
+  OPTIONAL {
+    ?analysis nubbekg:aboutSpecimen ?specimen2 .
+    ?specimen2 nubbekg:sampleType ?sampleType .
+  }
+  FILTER( !BOUND(?sampleTypeFilter) || lcase(str(?sampleType)) = lcase(str(?sampleTypeFilter)) )
+
+
+  ########################################
+  # OPTIONAL: BIOACTIVITY
+  ########################################
+  OPTIONAL {
+    ?analysis nubbekg:hasBioAssay ?bio .
+    ?bio rdfs:label ?bioLabel .
+  }
+  FILTER( !BOUND(?bioactivityFilter) || lcase(str(?bioLabel)) = lcase(str(?bioactivityFilter)) )
+
+
+  ##########################################################
+  # OPTIONAL: METABOLIC CLASS / PATHWAY
+  ##########################################################
+  OPTIONAL {
+    ?compound nubbekg:partOfMetabolicClass ?class .
+    ?class nubbekg:partOfMetabolicPathway ?pathway .
+    ?pathway rdfs:label ?pathwayLabel .
+  }
+  FILTER( !BOUND(?pathwayFilter) || lcase(str(?pathwayLabel)) = lcase(str(?pathwayFilter)) )
+
+
+  ##########################################################
+  # OPTIONAL DESCRIPTOR FILTERS (Formel, LogP, Lipinski etc.)
+  ##########################################################
+
+  OPTIONAL {
+    ?compound nubbekg:hasDescriptors ?descBlock .
+    ?descBlock nubbekg:hasDescriptor ?descriptor .
+    ?descriptor nubbekg:hasValue ?valueRaw .
+
+    BIND(STR(?descriptor) AS ?descName)
+    BIND(xsd:decimal(?valueRaw) AS ?value)
+  }
+
+  # Molecular Formula
+  FILTER( !BOUND(?formulaFilter) ||
+          (BOUND(?descName) && CONTAINS(?descName, "MolecularDescriptor") &&
+           lcase(str(?valueRaw)) = lcase(str(?formulaFilter))) )
+
+  # LogP
+  FILTER( !BOUND(?logpMin) || !BOUND(?logpMax) ||
+          (BOUND(?descName) && CONTAINS(?descName, "logpCoefficient") &&
+           ?value >= ?logpMin && ?value <= ?logpMax) )
+
+  # Lipinski
+  FILTER( !BOUND(?lipinskiMin) || !BOUND(?lipinskiMax) ||
+          (BOUND(?descName) && CONTAINS(?descName, "lipinski") &&
+           ?value >= ?lipinskiMin && ?value <= ?lipinskiMax) )
+
+  # Molecular Volume
+  FILTER( !BOUND(?molvolMin) || !BOUND(?molvolMax) ||
+          (BOUND(?descName) && CONTAINS(?descName, "molecularVolume") &&
+           ?value >= ?molvolMin && ?value <= ?molvolMax) )
+
+  # HBond Acceptor
+  FILTER( !BOUND(?hbaMin) || !BOUND(?hbaMax) ||
+          (BOUND(?descName) && CONTAINS(?descName, "hBondAcceptorCount") &&
+           ?value >= ?hbaMin && ?value <= ?hbaMax) )
+
+  # HBond Donor
+  FILTER( !BOUND(?hbdMin) || !BOUND(?hbdMax) ||
+          (BOUND(?descName) && CONTAINS(?descName, "hBondDonorCount") &&
+           ?value >= ?hbdMin && ?value <= ?hbdMax) )
+
+  # Monoisotopic mass
+  FILTER( !BOUND(?monoMin) || !BOUND(?monoMax) ||
+          (BOUND(?descName) && CONTAINS(?descName, "monoisotopicMass") &&
+           ?value >= ?monoMin && ?value <= ?monoMax) )
+
+  # TPSA
+  FILTER( !BOUND(?tpsaMin) || !BOUND(?tpsaMax) ||
+          (BOUND(?descName) && CONTAINS(?descName, "tpsa") &&
+           ?value >= ?tpsaMin && ?value <= ?tpsaMax) )
+
+  # Rotatable Bonds
+  FILTER( !BOUND(?rotbMin) || !BOUND(?rotbMax) ||
+          (BOUND(?descName) && CONTAINS(?descName, "nrotb") &&
+           ?value >= ?rotbMin && ?value <= ?rotbMax) )
+}
