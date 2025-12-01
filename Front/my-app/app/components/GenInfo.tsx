@@ -1,21 +1,28 @@
 import { ChevronDown, CircleQuestionMark, SearchIcon } from "lucide-react"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { fetchSample } from "../utils/fetch";
 import { useEffect, useState } from "react";
 import { nameList } from "../utils/queries.json"
+import metabolicList from "../utils/queries.json"
 
 interface GenInfoProps {
   onNameChange: (name: string) => void;
   onFormulaChange: (formula: string) => void;
+  onMetaChange: (meta: string) => void;
 }
 
-export function GenInfo({ onNameChange, onFormulaChange }: GenInfoProps) {
+export function GenInfo({ onNameChange, onFormulaChange, onMetaChange }: GenInfoProps) {
   const [name, setName] = useState<Array<{ commonName: { value: string } }>>([]);
   const [searchName, setSearchName] = useState("");
   const [nameOpen, setNameOpen] = useState(false);
-
+  const [molClass, setMolClass] = useState<Array<{ label: { value: string } }>>([]);
+  const [selectedProp, setSelectedProp] = useState("");
   const [formula, setFormula] = useState("");
+
+    useEffect(() => {
+      fetchSample(metabolicList.metabolicList).then(setMolClass);
+    }, []);
 
   useEffect(() => {
     fetchSample(nameList).then(setName);
@@ -66,14 +73,21 @@ export function GenInfo({ onNameChange, onFormulaChange }: GenInfoProps) {
       <DropdownMenu>
         <DropdownMenuTrigger className="w-full">
           <InputGroup>
-            <InputGroupInput placeholder="Metabolic Class" readOnly />
+            <InputGroupInput placeholder="Metabolic Class" value={selectedProp} readOnly />
             <InputGroupAddon align="inline-end">
               <ChevronDown />
             </InputGroupAddon>
           </InputGroup>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          {/* Items in dropdown menü hier */}
+          {molClass.map((item) => (
+            <DropdownMenuItem key={item.label.value}
+              onClick={() => {
+              setSelectedProp(item.label.value); 
+              onMetaChange(item.label.value);}}>
+              {item.label.value}
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuContent>
       </DropdownMenu>
 

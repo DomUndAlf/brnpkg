@@ -16,7 +16,7 @@ export default function Home() {
   const [species, setSpecies] = useState("");
   const [location, setLocation] = useState("");
   const [commonName, setCommonName] = useState("");
-  // const [, setMetabolicClass] = useState(""); 
+  const [, setMetabolicClass] = useState(""); 
   const [formula, setFormula] = useState("");
   const [bioProp, setBioProp] = useState("");
   const [lipinski, setLipinski] = useState<[number | null, number | null]>([null, null]);
@@ -33,7 +33,7 @@ export default function Home() {
       <header className="bg-green-700 text-white h-15 font-bold text-xl text-center p-4"> BRnpKG </header>
         <div className="flex flex-row justify-center">
           <div  className="flex-1 max-w-xl">
-            <GenInfo onNameChange={setCommonName} onFormulaChange={setFormula} /> 
+            <GenInfo onNameChange={setCommonName} onFormulaChange={setFormula} onMetaChange={setMetabolicClass} /> 
             <Sample onSpeciesChange={setSpecies} onLocationChange={setLocation} />
             {/* <Source onChange={setSource}/> */}
             <BioProp onChange={setBioProp}/>

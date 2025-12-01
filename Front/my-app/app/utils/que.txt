@@ -1,0 +1,130 @@
+
+Spezies mit best. Namen finden:[
+    PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?compound ?commonName ?smiles WHERE {
+  ?species a nubbekg:Species ;
+           rdfs:label "Aaptos aaptos" .
+  ?analysis a nubbekg:Analysis ;
+            nubbekg:aboutSpecimen ?species ;
+            nubbekg:discovered ?compound .
+  ?compound nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles .
+}
+]
+
+Alle Compounds aus best. Staat:[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX data: <http://nubbekg.aksw.org/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?compound ?commonName ?smiles WHERE {
+  ?state a nubbekg:State ;
+         rdfs:label ?stateLabel .
+  FILTER (lcase(str(?stateLabel)) = lcase("ceará"))
+
+  ?analysis a nubbekg:Analysis ;
+            nubbekg:aboutSpecimen ?specimen ;
+            nubbekg:discovered ?compound .
+  
+  ?specimen nubbekg:discoveredIn ?state .
+
+  ?compound nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles .
+}]
+
+Alle Compounds mit best. commonName:[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX data: <http://nubbekg.aksw.org/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?compound ?commonName ?smiles WHERE {
+
+  # Compound finden
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles .
+
+  # Filter auf common name
+  FILTER (lcase(str(?commonName)) = lcase("NAME_HIER"))
+}]
+
+lle Compounds mit best. MolecularFormula[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?commonName ?smiles WHERE {
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles ;
+            nubbekg:hasDescriptors ?descBlock .
+
+  # alle Descriptor-Einträge des Blocks
+  ?descBlock nubbekg:hasDescriptor ?descriptor .
+
+  # molecularFormula erkennen:
+  ?descriptor a nubbekg:MolecularDescriptor ;
+              nubbekg:hasValue ?formula .
+
+  FILTER(lcase(str(?formula)) = "c10h16")
+}
+]
+
+Compounds mit best lipinski[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT DISTINCT ?compound ?commonName ?smiles WHERE {
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles ;
+            nubbekg:hasDescriptors ?descBlock .
+  ?descBlock nubbekg:hasDescriptor ?descriptor .
+  ?descriptor a nubbekg:ConstitutionalDescriptor ;
+              nubbekg:hasValue ?lipValue .
+  FILTER(xsd:integer(?lipValue) >= 0 && xsd:integer(?lipValue) <= 1)
+}
+]
+
+Compounds mit best. bioactivity[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?compound ?commonName ?smiles WHERE {
+  ?bio a nubbekg:Bioactivity ;
+       rdfs:label "Anxiolytic" .
+  ?analysis a nubbekg:Analysis ;
+            nubbekg:hasBioAssay ?bio ;
+            nubbekg:discovered ?compound .
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles .
+}]
+
+Compounds mit best. sampletype[PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX data: <http://nubbekg.aksw.org/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?compound ?commonName ?smiles WHERE {
+  ?analysis a nubbekg:Analysis ;
+            nubbekg:aboutSpecimen ?specimen ;
+            nubbekg:discovered ?compound .
+
+  ?specimen nubbekg:sampleType ?sampleType .
+  FILTER (lcase(str(?sampleType)) = lcase("Biotransformation"))
+
+  ?compound nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles .
+}]
+
+Alle compound mit bestimmter metabolic class (Pathway): [
+  PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?commonName ?smiles WHERE {
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles ;
+            nubbekg:partOfMetabolicClass ?class .
+
+  ?class nubbekg:partOfMetabolicPathway ?pathway .
+  ?pathway rdfs:label "Alkaloids" .
+}
+
+]
