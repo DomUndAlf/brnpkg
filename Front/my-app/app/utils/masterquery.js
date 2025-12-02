@@ -114,7 +114,7 @@ SELECT DISTINCT ?commonName ?smiles WHERE {
          !CONTAINS(STR(?descriptor),"nrotb"))
 }
 
-LIMIT 50
+LIMIT 25
 OFFSET 0
 
 `;
