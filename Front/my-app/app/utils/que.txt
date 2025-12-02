@@ -20,6 +20,35 @@ SELECT DISTINCT ?commonName ?smiles WHERE {
 }
 
 
+##### SPECIES ####
+
+PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
+PREFIX data: <http://nubbekg.aksw.org/data/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+
+SELECT DISTINCT ?commonName ?smiles WHERE {
+  # Species filtern
+  ?species a nubbekg:Species ;
+           rdfs:label "Jatropha ribifolia"^^xsd:string .
+
+  # Specimen, das Teil dieser Species ist
+  ?specimen a nubbekg:Specimen ;
+            nubbekg:partOfSpecies ?species .
+
+  # Analysis, die das Specimen behandelt
+  ?analysis a nubbekg:Analysis ;
+            nubbekg:aboutSpecimen ?specimen ;
+            nubbekg:discovered ?compound .
+
+  # Compound-Daten
+  ?compound a nubbekg:Compound ;
+            nubbekg:commonName ?commonName ;
+            nubbekg:smiles ?smiles .
+}
+
+
 
 ####COMMONNAME:
 
@@ -273,131 +302,3 @@ SELECT DISTINCT ?commonName ?smiles ?value WHERE {
 
 
 
-
-
-
-MASTER
-
-PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#>
-PREFIX data: <http://nubbekg.aksw.org/data/>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
-SELECT DISTINCT ?commonName ?smiles WHERE {
-
-  ############################
-  # Basis: alle Verbindungen #
-  ############################
-  ?compound a nubbekg:Compound ;
-            nubbekg:commonName ?commonName ;
-            nubbekg:smiles ?smiles .
-
-  ########################################
-  # OPTIONAL: COMMON NAME FILTER
-  ########################################
-  OPTIONAL { BIND(?commonName AS ?cnFilter) }
-  FILTER( !BOUND(?commonNameFilter) || lcase(str(?commonName)) = lcase(str(?commonNameFilter)) )
-
-
-  ########################################
-  # OPTIONAL: STATE FILTER
-  ########################################
-  OPTIONAL {
-    ?analysis a nubbekg:Analysis ;
-              nubbekg:aboutSpecimen ?specimen ;
-              nubbekg:discovered ?compound .
-    ?specimen nubbekg:discoveredIn ?state .
-    ?state rdfs:label ?stateLabel .
-  }
-  FILTER( !BOUND(?stateFilter) || lcase(str(?stateLabel)) = lcase(str(?stateFilter)) )
-
-
-  ########################################
-  # OPTIONAL: SAMPLE TYPE
-  ########################################
-  OPTIONAL {
-    ?analysis nubbekg:aboutSpecimen ?specimen2 .
-    ?specimen2 nubbekg:sampleType ?sampleType .
-  }
-  FILTER( !BOUND(?sampleTypeFilter) || lcase(str(?sampleType)) = lcase(str(?sampleTypeFilter)) )
-
-
-  ########################################
-  # OPTIONAL: BIOACTIVITY
-  ########################################
-  OPTIONAL {
-    ?analysis nubbekg:hasBioAssay ?bio .
-    ?bio rdfs:label ?bioLabel .
-  }
-  FILTER( !BOUND(?bioactivityFilter) || lcase(str(?bioLabel)) = lcase(str(?bioactivityFilter)) )
-
-
-  ##########################################################
-  # OPTIONAL: METABOLIC CLASS / PATHWAY
-  ##########################################################
-  OPTIONAL {
-    ?compound nubbekg:partOfMetabolicClass ?class .
-    ?class nubbekg:partOfMetabolicPathway ?pathway .
-    ?pathway rdfs:label ?pathwayLabel .
-  }
-  FILTER( !BOUND(?pathwayFilter) || lcase(str(?pathwayLabel)) = lcase(str(?pathwayFilter)) )
-
-
-  ##########################################################
-  # OPTIONAL DESCRIPTOR FILTERS (Formel, LogP, Lipinski etc.)
-  ##########################################################
-
-  OPTIONAL {
-    ?compound nubbekg:hasDescriptors ?descBlock .
-    ?descBlock nubbekg:hasDescriptor ?descriptor .
-    ?descriptor nubbekg:hasValue ?valueRaw .
-
-    BIND(STR(?descriptor) AS ?descName)
-    BIND(xsd:decimal(?valueRaw) AS ?value)
-  }
-
-  # Molecular Formula
-  FILTER( !BOUND(?formulaFilter) ||
-          (BOUND(?descName) && CONTAINS(?descName, "MolecularDescriptor") &&
-           lcase(str(?valueRaw)) = lcase(str(?formulaFilter))) )
-
-  # LogP
-  FILTER( !BOUND(?logpMin) || !BOUND(?logpMax) ||
-          (BOUND(?descName) && CONTAINS(?descName, "logpCoefficient") &&
-           ?value >= ?logpMin && ?value <= ?logpMax) )
-
-  # Lipinski
-  FILTER( !BOUND(?lipinskiMin) || !BOUND(?lipinskiMax) ||
-          (BOUND(?descName) && CONTAINS(?descName, "lipinski") &&
-           ?value >= ?lipinskiMin && ?value <= ?lipinskiMax) )
-
-  # Molecular Volume
-  FILTER( !BOUND(?molvolMin) || !BOUND(?molvolMax) ||
-          (BOUND(?descName) && CONTAINS(?descName, "molecularVolume") &&
-           ?value >= ?molvolMin && ?value <= ?molvolMax) )
-
-  # HBond Acceptor
-  FILTER( !BOUND(?hbaMin) || !BOUND(?hbaMax) ||
-          (BOUND(?descName) && CONTAINS(?descName, "hBondAcceptorCount") &&
-           ?value >= ?hbaMin && ?value <= ?hbaMax) )
-
-  # HBond Donor
-  FILTER( !BOUND(?hbdMin) || !BOUND(?hbdMax) ||
-          (BOUND(?descName) && CONTAINS(?descName, "hBondDonorCount") &&
-           ?value >= ?hbdMin && ?value <= ?hbdMax) )
-
-  # Monoisotopic mass
-  FILTER( !BOUND(?monoMin) || !BOUND(?monoMax) ||
-          (BOUND(?descName) && CONTAINS(?descName, "monoisotopicMass") &&
-           ?value >= ?monoMin && ?value <= ?monoMax) )
-
-  # TPSA
-  FILTER( !BOUND(?tpsaMin) || !BOUND(?tpsaMax) ||
-          (BOUND(?descName) && CONTAINS(?descName, "tpsa") &&
-           ?value >= ?tpsaMin && ?value <= ?tpsaMax) )
-
-  # Rotatable Bonds
-  FILTER( !BOUND(?rotbMin) || !BOUND(?rotbMax) ||
-          (BOUND(?descName) && CONTAINS(?descName, "nrotb") &&
-           ?value >= ?rotbMin && ?value <= ?rotbMax) )
-}
