@@ -1,9 +1,5 @@
-export interface Binding {
-  commonName: { value: string };
-  smiles: { value: string };
-}
-
-export interface SimpleBinding {
+export interface SimpleBinding{
+  compound: string;
   commonName: string;
   smiles: string;
 }

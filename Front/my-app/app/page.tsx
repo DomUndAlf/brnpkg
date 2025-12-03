@@ -10,8 +10,8 @@ import Downloads from "./components/Downloads";
 import { ResultBox } from "./components/Results";
 import Wrapper from "./components/Detailpage/Wrapper";
 import { useState } from "react";
-import { query } from "../app/utils/masterquery"
-import { Binding } from "./utils/interfaces";
+import { buildCompoundFilterQuery } from "../app/utils/queryBuilder"
+import { SimpleBinding } from "./utils/interfaces";
 
 export default function Home() {
 
@@ -30,60 +30,44 @@ export default function Home() {
   const [cLogP, setCLogP] = useState<[number | null, number | null]>([null, null]);
   const [tpsa, setTpsa] = useState<[number | null, number | null]>([null, null]);
   const [rotable, setRotable] = useState<[number | null, number | null]>([null, null]);
+  
 
-  const [results, setResults] = useState<any[]>([]);
+  const [results, setResults] = useState<unknown[]>([]);
 
-  const handleSearch = async () => {
-    const RAW_QUERY = query;
+  async function handleSearch() {
+  const filters = {
+    source,
+    species,
+    location,
+    commonName,
+    metabolicClass,
+    molecularFormula: formula,
+    bioProp
+  };
 
-    const finalQuery = RAW_QUERY
-      .replace("{{species}}", species || "")
-      .replace("{{state}}", location || "")
-      .replace("{{commonName}}", commonName || "")
-      .replace("{{formula}}", formula || "")
-      .replace("{{bioactivity}}", bioProp || "")
-      .replace("{{sampleType}}", source || "")
-      .replace("{{pathway}}", metabolicClass || "")
-      // numeric ranges
-      .replace("{{lipinskiMin}}", lipinski[0]?.toString() || "")
-      .replace("{{lipinskiMax}}", lipinski[1]?.toString() || "")
-      .replace("{{logPmin}}", cLogP[0]?.toString() || "")
-      .replace("{{logPmax}}", cLogP[1]?.toString() || "")
-      .replace("{{molVolMin}}", molar[0]?.toString() || "")
-      .replace("{{molVolMax}}", molar[1]?.toString() || "")
-      .replace("{{hbaMin}}", accept[0]?.toString() || "")
-      .replace("{{hbaMax}}", accept[1]?.toString() || "")
-      .replace("{{hbdMin}}", donor[0]?.toString() || "")
-      .replace("{{hbdMax}}", donor[1]?.toString() || "")
-      .replace("{{monoMin}}", monoiso[0]?.toString() || "")
-      .replace("{{monoMax}}", monoiso[1]?.toString() || "")
-      .replace("{{tpsaMin}}", tpsa[0]?.toString() || "")
-      .replace("{{tpsaMax}}", tpsa[1]?.toString() || "")
-      .replace("{{rotMin}}", rotable[0]?.toString() || "")
-      .replace("{{rotMax}}", rotable[1]?.toString() || "");
+  const query = buildCompoundFilterQuery(filters);
 
-const response = await fetch("http://localhost:4000/sparql", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ query: finalQuery })
-});
+  const url = "http://localhost:3030/nubbe2KG/query"; // anpassen
+  const params = new URLSearchParams();
+  params.append("query", query);
 
-if (!response.ok) {
-  const text = await response.text();
-  console.error("SPARQL Server Error:", text);
-  return;
+  const res = await fetch(`${url}?${params.toString()}`, {
+    headers: { Accept: "application/sparql-results+json" },
+  });
+
+  const json = await res.json();
+   const bindings = json.results.bindings;
+
+   const results: SimpleBinding[] = json.results.bindings.map((b: any) => ({
+  compound: b.compound.value,
+  commonName: b.commonName.value,
+  smiles: b.smiles.value,
+    }));
+
+  setResults(results);
+  console.log(bindings);
+
 }
-
-const data = await response.json();
-
-const results = data.results.bindings.map((item: Binding) => ({
-  commonName: item.commonName.value,
-  smiles: item.smiles.value
-}));
-
-setResults(results);
-console.log(results);
-  }
 
 
 
