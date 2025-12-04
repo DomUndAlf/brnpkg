@@ -10,8 +10,6 @@ export function buildCompoundFilterQuery(filters) {
   } = filters;
 
   let where = [];
-  let optional = [];
-
 
   where.push(`
     ?compound nubbekg:commonName ?commonName .
