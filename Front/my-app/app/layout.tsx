@@ -29,8 +29,7 @@ export default function RootLayout({
         <script src="/rdkit/RDKit_minimal.js"></script>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>
     </html>

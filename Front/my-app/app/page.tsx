@@ -12,6 +12,7 @@ import Wrapper from "./components/Detailpage/Wrapper";
 import { useState } from "react";
 import { buildCompoundFilterQuery } from "../app/utils/queryBuilder"
 import { SimpleBinding } from "./utils/interfaces";
+import { computeSmiles } from "./utils/computeSmiles";
 
 export default function Home() {
 
@@ -32,7 +33,7 @@ export default function Home() {
   const [rotable, setRotable] = useState<[number | null, number | null]>([null, null]);
   
 
-  const [results, setResults] = useState<unknown[]>([]);
+  const [results, setResults] = useState<SimpleBinding[]>([]);
 
   async function handleSearch() {
   const filters = {
@@ -56,20 +57,45 @@ export default function Home() {
   });
 
   const json = await res.json();
-   const bindings = json.results.bindings;
-
-   const results: SimpleBinding[] = json.results.bindings.map((b: any) => ({
-  compound: b.compound.value,
-  commonName: b.commonName.value,
-  smiles: b.smiles.value,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const bindings: SimpleBinding[] = json.results.bindings.map((b: any) => ({
+      compound: b.compound.value,
+      commonName: b.commonName.value,
+      smiles: b.smiles.value,
     }));
 
-  setResults(results);
-  console.log(bindings);
+ const filtered = bindings.filter((item) => {
+  const desc = computeSmiles(item.smiles);
 
+  if (molar[0] !== null && desc.molWeight < molar[0]) return false;
+  if (molar[1] !== null && desc.molWeight > molar[1]) return false;
+
+  if (accept[0] !== null && desc.hAcceptors < accept[0]) return false;
+  if (accept[1] !== null && desc.hAcceptors > accept[1]) return false;
+
+  if (donor[0] !== null && desc.hDonors < donor[0]) return false;
+  if (donor[1] !== null && desc.hDonors > donor[1]) return false;
+
+  if (lipinski[0] !== null && desc.lipinskiViolations < lipinski[0]) return false;
+  if (lipinski[1] !== null && desc.lipinskiViolations > lipinski[1]) return false;
+
+  if (monoiso[0] !== null && desc.monoIsotopicMass < monoiso[0]) return false;
+  if (monoiso[1] !== null && desc.monoIsotopicMass > monoiso[1]) return false;
+
+  if (cLogP[0] !== null && desc.clogP < cLogP[0]) return false;
+  if (cLogP[1] !== null && desc.clogP > cLogP[1]) return false;
+
+  if (tpsa[0] !== null && desc.TPSA < tpsa[0]) return false;
+  if (tpsa[1] !== null && desc.TPSA > tpsa[1]) return false;
+
+  if (rotable[0] !== null && desc.nrotB < rotable[0]) return false;
+  if (rotable[1] !== null && desc.nrotB > rotable[1]) return false;
+
+  return true;
+});
+
+  setResults(filtered);
 }
-
-
 
   return (
     <div>
