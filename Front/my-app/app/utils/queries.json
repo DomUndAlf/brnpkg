@@ -3,5 +3,6 @@
     "locationList": "PREFIX onto: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?label WHERE {?state a onto:State . OPTIONAL { ?state rdfs:label ?label }}",
     "propertyList": "PREFIX onto: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?label WHERE { ?bioactivity a onto:Bioactivity . OPTIONAL { ?bioactivity rdfs:label ?label }}",
     "nameList": "PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?commonName WHERE { ?compound a nubbekg:Compound ; nubbekg:commonName ?commonName . FILTER(BOUND(?commonName))}",
-    "metabolicList": "PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?label WHERE { ?p a nubbekg:Pathway ; rdfs:label ?label .}"
+    "metabolicList": "PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#> PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#> SELECT ?label WHERE { ?p a nubbekg:Pathway ; rdfs:label ?label .}",
+    "yearsList": "PREFIX nubbekg: <http://nubbekg.aksw.org/ontology#> PREFIX data: <http://nubbekg.aksw.org/data/> SELECT DISTINCT ?year (STR(?year) AS ?label) WHERE { ?pub a nubbekg:Publication ; nubbekg:year ?year . } ORDER BY ?year"
   }

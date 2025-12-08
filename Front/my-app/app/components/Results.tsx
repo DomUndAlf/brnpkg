@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {SimpleBinding } from "../utils/interfaces";
+import { SimpleBinding } from "../utils/interfaces";
 
 
 export function ResultBox({ data }: { data: SimpleBinding[] }) {
@@ -22,7 +22,7 @@ export function ResultBox({ data }: { data: SimpleBinding[] }) {
   }
 
 
-  
+
   return (
     <div className="flex justify-center">
       <div className="border rounded-md overflow-hidden w-[85%]">
@@ -34,14 +34,22 @@ export function ResultBox({ data }: { data: SimpleBinding[] }) {
 
         <div className="flex flex-col gap-2 p-2">
           {pageData.map((item, i) => (
-            <div key={i} className="flex border rounded-md transition-colors hover:bg-green-100 cursor-pointer active:bg-green-200">
-              <div className="w-1/3 px-4 py-2">{item.compound}</div>
+            <div key={i} onClick={() => window.open(`/details?compound=${encodeURIComponent(item.compound)}`, "_blank")}
+            className="flex border rounded-md transition-colors hover:bg-green-100 cursor-pointer active:bg-green-200">
+              <div className="w-1/3 px-4 py-2">  <a
+                href={item.compound}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-800 hover:underline"
+              >
+                {item.compound}
+              </a></div>
               <div className="w-1/3 px-4 py-2">{item.commonName}</div>
-              <div className="w-1/3 px-4 py-2 break-words">{item.smiles}</div>
+              <div className="w-1/3 px-4 py-2 wrap-break-word">{item.smiles}</div>
             </div>
           ))}
         </div>
-             {totalPages > 1 && (
+        {totalPages > 1 && (
           <div className="flex justify-between p-3">
             <button
               className="px-3 py-1 bg-green-700 text-white rounded disabled:opacity-50"

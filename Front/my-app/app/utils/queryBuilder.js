@@ -6,7 +6,8 @@ export function buildCompoundFilterQuery(filters) {
     species,
     location,           
     source,             
-    bioProp        
+    bioProp,
+    year        
   } = filters;
 
   let where = [];
@@ -77,6 +78,16 @@ export function buildCompoundFilterQuery(filters) {
 ?assay nubbekg:bioactivity ?bioactivity .
 ?bioactivity rdfs:label ?bioLabel .
 FILTER (lcase(str(?bioLabel)) = lcase("${bioProp}"))
+    `);
+  }
+
+  if (year) {
+  where.push(`
+      ?analysis nubbekg:reference ?ref .
+      BIND(IRI(REPLACE(str(?ref), "reference_", "publication_")) AS ?pub)
+      ?pub a nubbekg:Publication ;
+           nubbekg:year ?year .
+      FILTER(str(?year) = "${year}")
     `);
   }
 

@@ -13,6 +13,7 @@ import { useState } from "react";
 import { buildCompoundFilterQuery } from "../app/utils/queryBuilder"
 import { SimpleBinding } from "./utils/interfaces";
 import { computeSmiles } from "./utils/computeSmiles";
+import Publication from "./components/Publication";
 
 export default function Home() {
 
@@ -31,6 +32,7 @@ export default function Home() {
   const [cLogP, setCLogP] = useState<[number | null, number | null]>([null, null]);
   const [tpsa, setTpsa] = useState<[number | null, number | null]>([null, null]);
   const [rotable, setRotable] = useState<[number | null, number | null]>([null, null]);
+  const [year, setYear] = useState("");
   
 
   const [results, setResults] = useState<SimpleBinding[]>([]);
@@ -43,7 +45,8 @@ export default function Home() {
     commonName,
     metabolicClass,
     molecularFormula: formula,
-    bioProp
+    bioProp,
+    year
   };
 
   const query = buildCompoundFilterQuery(filters);
@@ -106,6 +109,7 @@ export default function Home() {
           <Sample onSpeciesChange={setSpecies} onLocationChange={setLocation} />
           <Source onChange={setSource} />
           <BioProp onChange={setBioProp} />
+          <Publication onChange={setYear}/>
         </div>
         <div className="flex-1 max-w-xl">
           <ChemInfo
@@ -126,13 +130,12 @@ export default function Home() {
         <Button className="bg-green-700 p-5 text-white" onClick={() => window.location.reload()}>Reset</Button>
       </div>
 
-      <Downloads />
-     <ResultBox data={results}/> 
-      <>
+      <Downloads results={results}/>
+      {results.length > 0 && <ResultBox data={results} />}
+
         {/* später löschen, ist nur zum testen wie es aussieht */}
         <Wrapper />
 
-      </>
     </div>
   );
   }
