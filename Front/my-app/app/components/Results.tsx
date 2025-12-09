@@ -21,6 +21,11 @@ export function ResultBox({ data }: { data: SimpleBinding[] }) {
     if (page < totalPages) setPage(page + 1);
   }
 
+  function extractId(uri: string) {
+  if (!uri) return "";
+  return uri.split("/").pop()!.replace(/[#>]/g, "");
+}
+
 
 
   return (
@@ -34,7 +39,7 @@ export function ResultBox({ data }: { data: SimpleBinding[] }) {
 
         <div className="flex flex-col gap-2 p-2">
           {pageData.map((item, i) => (
-            <div key={i} onClick={() => window.open(`/details?compound=${encodeURIComponent(item.compound)}`, "_blank")}
+            <div key={i} onClick={() => window.open(`/compound/${extractId(item.compound)}`, "_blank")}
             className="flex border rounded-md transition-colors hover:bg-green-100 cursor-pointer active:bg-green-200">
               <div className="w-1/3 px-4 py-2">  <a
                 href={item.compound}

@@ -8,7 +8,6 @@ import ChemInfo from "./components/ChemInfo";
 import { Button } from "@/components/ui/button";
 import Downloads from "./components/Downloads";
 import { ResultBox } from "./components/Results";
-import Wrapper from "./components/Detailpage/Wrapper";
 import { useState } from "react";
 import { buildCompoundFilterQuery } from "../app/utils/queryBuilder"
 import { SimpleBinding } from "./utils/interfaces";
@@ -132,10 +131,6 @@ export default function Home() {
 
       <Downloads results={results}/>
       {results.length > 0 && <ResultBox data={results} />}
-
-        {/* später löschen, ist nur zum testen wie es aussieht */}
-        <Wrapper />
-
     </div>
   );
   }

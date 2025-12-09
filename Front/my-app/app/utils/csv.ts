@@ -23,7 +23,6 @@ export function downloadCSV(results: SimpleBinding[]) {
   URL.revokeObjectURL(url);
 }
 
-
 export function downloadSDF(results: SimpleBinding[]) {
   if (!results.length) return;
 
