@@ -6,23 +6,22 @@ import References from "./References/References";
 
 type WrapperProps = {
   id: string;
-  data: unknown; // später typisieren, jetzt egal
 };
 
-function Wrapper({ id, data }: WrapperProps) {
+export default async function Wrapper({ id }: WrapperProps) {
   return (
-    <div className="w-[80vw] mx-auto border rounded-md p-5">
-      <h3 className="pb-4 text-3xl">Compound {id}</h3>
+    <div className="w-[80vw] mx-auto mt-10 p-5">
+      <h3 className="pb-4 text-3xl">Compound Information</h3>
 
-      <Overview data={data} />
-      <References data={data} />
+      <Overview id={id} />
+      <References id={id} />
 
-      {data?.smiles?.value ? <Molecule smiles={data.smiles.value} /> : null}
+      {/* {data?.smiles?.value ? <Molecule smiles={data.smiles.value} /> : null} */}
 
-      <ChemDetails data={data} />
-      <DetDownloads id={id} data={data} />
+       <ChemDetails id={id} />
+      {/* <DetDownloads id={id/>  */}
     </div>
   );
 }
 
-export default Wrapper;
+

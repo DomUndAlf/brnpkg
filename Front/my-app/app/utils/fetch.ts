@@ -8,5 +8,9 @@
     });
 
     const data = await res.json();
+
+    console.log("query:", query);
+    console.log("response:", res);
+
     return data.results.bindings;
   }

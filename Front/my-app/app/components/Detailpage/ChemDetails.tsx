@@ -1,32 +1,31 @@
+import { buildChemDetailsQuery } from "@/app/utils/compoundBuilderQuery";
+import { fetchSample } from "@/app/utils/fetch";
 
-function ChemDetails() {
-    return (
-        <div className="mx-auto border rounded-md mt-5 p-5">
-            <h3 className="text-2xl mb-5"> Chemical Details </h3>
-            <div className="flex gap-10">
-                <div>
-                    <p className="mb-2 font-medium">inchi</p>
-                    <p className="mb-2 font-medium">inchikey</p>
-                    <p className="mb-2 font-medium">iupac Name</p>
-                    <p className="mb-2 font-medium">TopoPSA</p>
-                    <p className="mb-2 font-medium">Lipinski Failures</p>
-                    <p className="mb-2 font-medium">H-Bond Acceptors</p>
-                    <p className="mb-2 font-medium">H-Bond Donors</p>
-                    <p className="mb-2 font-medium">rotable Bonds</p>
-                </div>
-                <div>
-                    <p className="mb-2">1</p>
-                    <p className="mb-2">1</p>
-                    <p className="mb-2">1</p>
-                    <p className="mb-2">1</p>
-                    <p className="mb-2">1</p>
-                    <p className="mb-2">1</p>
-                    <p className="mb-2">1</p>
-                    <p className="mb-2">1</p>
-                </div>
-            </div>
-        </div>
-    )
+type ChemProps = { id: string };
+
+export type ChemDataItem = {
+  shortLabel: { value: string };
+  value?: { value: string };
+};
+
+export default async function ChemDetails({ id }: ChemProps) {
+  const query = buildChemDetailsQuery(id);
+  const data: ChemDataItem[] = await fetchSample(query);
+
+  const cleanLabel = (raw: string) => raw.replace(/^v2/, "");
+
+  return (
+    <div className="mx-auto border rounded-md mt-5 p-5">
+      <h3 className="text-2xl mb-5">Chemical Details</h3>
+
+      <div className="grid grid-cols-2 gap-y-2">
+        {data.map((row) => (
+          <>
+            <p className="font-medium">{cleanLabel(row.shortLabel.value)}</p>
+            <p>{row.value?.value ?? "-"}</p>
+          </>
+        ))}
+      </div>
+    </div>
+  );
 }
-
-export default ChemDetails;
