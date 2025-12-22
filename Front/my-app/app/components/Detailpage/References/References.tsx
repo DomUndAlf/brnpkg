@@ -9,6 +9,7 @@ type RefProps = {
 export default async function References({ id }: RefProps) {
     const query = buildReferencesQuery(id);
     const data: ReferenceData[] = await fetchSample(query);
+    
 
     return (
         <div className="mx-auto border rounded-md p-5">

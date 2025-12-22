@@ -11,17 +11,18 @@ interface Props {
   svgMode?: boolean;
 }
 
-export default function MoleculeStructure({
-  id,
-  structure,
-  width = 500,
-  height = 500,
-}: Props) {
+
+export default function MoleculeStructure({ id, structure, width = 500, height = 500 }: Props) {
   const ref = useRef<HTMLDivElement>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function draw() {
+      if (typeof structure !== "string" || !structure.trim()) {
+        setError("Keine gültige SMILES");
+        console.log(structure);
+        return;
+      }
       const RDKit = await initRDKit();
       if (!RDKit) {
         setError("RDKit konnte nicht geladen werden");

@@ -64,9 +64,9 @@ export function Sample({ onSpeciesChange, onLocationChange }: SampleProps) {
 
       {speciesOpen && filtered.length > 0 && (
         <div className="border rounded-md mt-1 bg-white max-h-48 overflow-auto">
-          {filtered.map((s) => (
+          {filtered.map((s, index) => (
             <div
-              key={s.label.value}
+              key={`${s.label.value}-${index}`}
               className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={() => handleSpeciesSelect(s.label.value)}>
               {s.label.value}
@@ -85,8 +85,8 @@ export function Sample({ onSpeciesChange, onLocationChange }: SampleProps) {
           </InputGroup>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          {location.map((item) => (
-            <DropdownMenuItem key={item.label.value}
+          {location.map((item, index) => (
+            <DropdownMenuItem key={`${item.label.value}-${index}`}
             onClick={() => handleLocationSelect(item.label.value)}>
               {item.label.value}
             </DropdownMenuItem>

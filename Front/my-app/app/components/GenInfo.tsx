@@ -59,9 +59,9 @@ export function GenInfo({ onNameChange, onFormulaChange, onMetaChange }: GenInfo
 
       {nameOpen && filtered.length > 0 && (
         <div className="border rounded-md mt-1 bg-white max-h-48 overflow-auto">
-          {filtered.map((s) => (
+          {filtered.map((s, index) => (
             <div
-              key={s.commonName.value}
+              key={`${s.commonName.value}-${index}`}
               className="px-3 py-2 hover:bg-gray-100 cursor-pointer"
               onClick={() => handleSpeciesSelect(s.commonName.value)}>
               {s.commonName.value}
@@ -80,8 +80,8 @@ export function GenInfo({ onNameChange, onFormulaChange, onMetaChange }: GenInfo
           </InputGroup>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          {molClass.map((item) => (
-            <DropdownMenuItem key={item.label.value}
+          {molClass.map((item, index) => (
+            <DropdownMenuItem key={`${item.label.value}-${index}`}
               onClick={() => {
               setSelectedProp(item.label.value); 
               onMetaChange(item.label.value);}}>

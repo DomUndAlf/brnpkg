@@ -1,5 +1,6 @@
 import { buildChemDetailsQuery } from "@/app/utils/compoundBuilderQuery";
 import { fetchSample } from "@/app/utils/fetch";
+import React from "react";
 
 type ChemProps = { id: string };
 
@@ -20,10 +21,10 @@ export default async function ChemDetails({ id }: ChemProps) {
 
       <div className="grid grid-cols-2 gap-y-2">
         {data.map((row) => (
-          <>
+          <React.Fragment key={row.shortLabel.value}>
             <p className="font-medium">{cleanLabel(row.shortLabel.value)}</p>
             <p>{row.value?.value ?? "-"}</p>
-          </>
+          </React.Fragment>
         ))}
       </div>
     </div>

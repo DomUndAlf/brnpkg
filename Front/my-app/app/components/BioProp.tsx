@@ -30,8 +30,8 @@ function BioProp({ onChange }: { onChange: (v: string) => void }) {
           </InputGroup>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          {properties.map((item) => (
-            <DropdownMenuItem key={item.label.value}
+          {properties.map((item, index) => (
+            <DropdownMenuItem key={`${item.label.value}-${index}`}
               onClick={() => {
               setSelectedProp(item.label.value); 
               onChange(item.label.value);}}>

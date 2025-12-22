@@ -9,8 +9,17 @@
 
     const data = await res.json();
 
-    console.log("query:", query);
     console.log("response:", res);
 
     return data.results.bindings;
   }
+
+  export async function fetchSingle<T>(query: string): Promise<T | null> {
+  const res = await fetchSample(query);
+
+  if (!Array.isArray(res) || res.length === 0) {
+    return null;
+  }
+
+  return res[0] as T;
+}

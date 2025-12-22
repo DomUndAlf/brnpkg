@@ -8,6 +8,7 @@ import yearsList from "../utils/queries.json"
 function Publication({ onChange }: { onChange: (v: string) => void }) {
   const [properties, setProperties] = useState<Array<{ label: { value: string } }>>([]);
   const [selectedProp, setSelectedProp] = useState("");
+  
 
   useEffect(() => {
     fetchSample(yearsList.yearsList).then(res => {

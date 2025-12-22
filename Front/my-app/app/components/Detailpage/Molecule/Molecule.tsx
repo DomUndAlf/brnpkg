@@ -1,6 +1,18 @@
-import MoleculeStructure from "./MoleculeStructure";
+"use client";
 
-function Molecule(smiles: string) {
+
+import dynamic from "next/dynamic";
+
+const MoleculeStructure = dynamic(
+  () => import("./MoleculeStructure"),
+  { ssr: false }
+);
+
+type Props = {
+  smiles: string;
+};
+
+function Molecule({ smiles }: Props) {
   return (
     <div id="component-example-svg" className="container">
       <div className="border rounded-md mt-5">
