@@ -86,7 +86,14 @@ WHERE {
   ?descGroup nubbekg:hasDescriptor ?descriptor .
   OPTIONAL { ?descriptor nubbekg:hasValue ?value }
 
-  BIND(REPLACE(STRAFTER(STR(?descriptor), "http://nubbekg.aksw.org/data/"), "_.*$", "") AS ?shortLabel)
+  BIND(
+  REPLACE(
+    STRAFTER(STR(?descriptor), "http://nubbekg.aksw.org/v2/data/"),
+    "_.*$",
+    ""
+  ) AS ?shortLabel
+)
+
 
 }
 `;

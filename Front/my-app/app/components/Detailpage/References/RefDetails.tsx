@@ -27,14 +27,16 @@ function RefDetails({ doi }: Props) {
 
     return (
     <div className="m-5 mt-7">
-        <p className="text-lg font-medium pb-2">Reference Information</p>
-        <p className="pb-1"><span className="font-medium">Title: </span> {properties?.title?.value} </p>
-        <p  className="pb-1"><span className="font-medium">Published in:</span> {properties?.publicationYear?.value}</p>
-        <p className="pb-1"><span className="font-medium">Magazine: </span>{properties?.periodicMagazine?.value}</p>
-        <p className="pb-1"><span className="font-medium">Volume:</span> {properties?.volume?.value}</p>
-        <p className="pb-1"><span className="font-medium">Issue: </span>{properties?.issue?.value}</p>
-        <p className="pb-1"><span className="font-medium">Pages: </span>{properties?.pages?.value}</p>
-        <p className="pb-1" ><span className="font-medium">Publisher: </span>{properties?.publisher?.value}</p>
+        <p className="text-xl pb-3">Reference Information</p>
+            <div className="grid grid-cols-2 gap-y-1">
+                <p className="font-medium">Title: </p> <p> {properties?.title?.value} </p>
+                <p className="font-medium">Published in: </p> <p> {properties?.publicationYear?.value}</p>
+                <p className="font-medium">Magazine: </p> <p>{properties?.periodicMagazine?.value}</p>
+                <p className="font-medium">Volume:</p> <p> {properties?.volume?.value}</p>
+                <p className="font-medium">Issue: </p> <p>{properties?.issue?.value}</p>
+                <p className="font-medium"> Pages:</p> <p> {properties?.pages?.value}</p>
+                <p className="font-medium"> Publisher:</p> <p> {properties?.publisher?.value}</p>
+            </div>
     </div>
     );
 }

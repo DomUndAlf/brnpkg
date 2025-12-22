@@ -31,8 +31,6 @@ function RefItem({ refData }: RefItemsProps) {
       </div>
           {open && <RefDetails doi={refData.doi?.value ?? "no publication info available"} />}
     </div>
-
-
   )
 }
 

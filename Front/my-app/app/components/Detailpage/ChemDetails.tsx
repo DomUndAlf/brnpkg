@@ -20,8 +20,8 @@ export default async function ChemDetails({ id }: ChemProps) {
       <h3 className="text-2xl mb-5">Chemical Details</h3>
 
       <div className="grid grid-cols-2 gap-y-2">
-        {data.map((row) => (
-          <React.Fragment key={row.shortLabel.value}>
+        {data.map((row, i) => (
+          <React.Fragment key={`${row.shortLabel.value}-${i}`}>
             <p className="font-medium">{cleanLabel(row.shortLabel.value)}</p>
             <p>{row.value?.value ?? "-"}</p>
           </React.Fragment>
