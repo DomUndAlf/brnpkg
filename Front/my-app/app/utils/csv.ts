@@ -1,7 +1,13 @@
 import { SimpleBinding } from "./interfaces";
 import OCL from "openchemlib";
 
-export function downloadCSV(results: SimpleBinding[]) {
+function toArray<T>(input: T | T[]): T[] {
+  return Array.isArray(input) ? input : [input];
+}
+
+
+export function downloadCSV(res: SimpleBinding | SimpleBinding[]) {
+  const results = toArray(res);
   if (!results.length) return;
 
   const headers = Object.keys(results[0])  as (keyof SimpleBinding)[];

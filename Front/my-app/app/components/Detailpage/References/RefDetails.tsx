@@ -27,8 +27,8 @@ function RefDetails({ doi }: Props) {
 
     return (
     <div className="m-5 mt-7">
-        <p className="text-xl pb-3">Reference Information</p>
-            <div className="grid grid-cols-2 gap-y-1">
+        <p className="text-xl pb-3 pl-5">Reference Information</p>
+            <div className="grid grid-cols-2 gap-y-1 pl-5 pr-56">
                 <p className="font-medium">Title: </p> <p> {properties?.title?.value} </p>
                 <p className="font-medium">Published in: </p> <p> {properties?.publicationYear?.value}</p>
                 <p className="font-medium">Magazine: </p> <p>{properties?.periodicMagazine?.value}</p>

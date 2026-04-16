@@ -10,7 +10,6 @@ export default async function References({ id }: RefProps) {
     const query = buildReferencesQuery(id);
     const data: ReferenceData[] = await fetchSample(query);
     
-
     return (
         <div className="mx-auto border rounded-md p-5">
             <h3 className="text-2xl mb-5">References</h3>
