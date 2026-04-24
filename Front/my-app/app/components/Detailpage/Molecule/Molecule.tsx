@@ -1,6 +1,8 @@
 "use client";
 
 
+import { initRDKit } from "@/app/utils/initRDKit";
+import Button from "@mui/material/Button";
 import dynamic from "next/dynamic";
 
 const MoleculeStructure = dynamic(
@@ -11,6 +13,8 @@ const MoleculeStructure = dynamic(
 type Props = {
   smiles: string;
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 
 function Molecule({ smiles }: Props) {
   return (
@@ -28,5 +32,7 @@ function Molecule({ smiles }: Props) {
     </div>
   );
 }
+
+
 
 export default Molecule;
