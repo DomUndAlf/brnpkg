@@ -11,18 +11,25 @@ const FUSEKI_URL=process.env.FUSEKI_URL;
 const BE_PORT=process.env.BE_PORT;
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: FE_URL
+}));
 app.use(express.json());
 
 app.post("/sparql", async (req, res) => {
   try {
+        const query = req.body?.query;
+
+    if (!query) {
+      return res.status(400).json({ error: "Missing query" });
+    }
     const response = await fetch(FUSEKI_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/sparql-query",
         "Accept": "application/sparql-results+json"
       },
-      body: req.body.query
+      body: query
     });
 
     const data = await response.json();
@@ -33,6 +40,6 @@ app.post("/sparql", async (req, res) => {
   }
 });
 
-app.listen(BE_PORT, () => console.log("Backend läuft auf Port " + BE_PORT));
+app.listen(BE_PORT || 4000, () => console.log("Backend läuft auf Port " + BE_PORT));
 
 // app.post(/converToMol2) noch implementieren

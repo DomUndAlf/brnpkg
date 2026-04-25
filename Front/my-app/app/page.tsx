@@ -51,13 +51,18 @@ export default function Home() {
 
   const query = buildCompoundFilterQuery(filters);
 
-  const URL = process.env.FUSEKI_URL;
+  const URL = process.env.NEXT_PUBLIC_API_URL;
 
   const params = new URLSearchParams();
   params.append("query", query);
 
-  const res = await fetch(`${URL}?${params.toString()}`, {
-    headers: { Accept: "application/sparql-results+json" },
+  const res = await fetch(`${URL}/sparql`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/sparql-results+json"
+    },
+    body: JSON.stringify({ query })
   });
 
   const json = await res.json();
