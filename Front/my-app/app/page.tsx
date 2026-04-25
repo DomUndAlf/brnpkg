@@ -14,6 +14,7 @@ import { SimpleBinding } from "./utils/interfaces";
 import { computeSmiles } from "./utils/computeSmiles";
 import Publication from "./components/Publication";
 
+
 export default function Home() {
 
   const [source, setSource] = useState("");
@@ -50,11 +51,12 @@ export default function Home() {
 
   const query = buildCompoundFilterQuery(filters);
 
-  const url = "http://localhost:3030/nubbe2KG/query"; // anpassen
+  const URL = process.env.FUSEKI_URL;
+
   const params = new URLSearchParams();
   params.append("query", query);
 
-  const res = await fetch(`${url}?${params.toString()}`, {
+  const res = await fetch(`${URL}?${params.toString()}`, {
     headers: { Accept: "application/sparql-results+json" },
   });
 
